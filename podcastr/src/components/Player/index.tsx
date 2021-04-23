@@ -6,7 +6,7 @@ export function Player() {
     return (
         <div className={styles.playerContainer}>
             <header>
-                <img src="../../public/playing.svg" alt=""/>
+                <img src="/playing.svg" alt=""/>
                 <strong>Tocando agora</strong>
             </header>
             <div className={styles.emptyPlayer}>
@@ -24,19 +24,19 @@ export function Player() {
                 </div>
                 <div className={styles.buttons}>
                     <button type="button">
-                        <img src="../../../public/shuffle.svg"/>
+                        <img src="/shuffle.svg"/>
                     </button>
                     <button type="button">
-                        <img src="../../../public/play-previous.svg"/>
+                        <img src="/play-previous.svg"/>
                     </button>
                     <button type="button">
-                        <img src="../../../public/play.svg" />
+                        <img src="/play.svg" />
                     </button>
                     <button type="button">
-                        <img src="../../../public/play-next.svg" />
+                        <img src="/play-next.svg" />
                     </button>
                     <button type="button">
-                        <img src="../../../public/repeat.svg" />
+                        <img src="/repeat.svg" />
                     </button>
                 </div>
             </footer>
