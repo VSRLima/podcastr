@@ -4,6 +4,9 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import api from "../../services/api";
 import { convertDurationToTimeString } from "../../utils/convertDuration";
+import styles from  './episode.module.scss';
+import Image from 'next/image';
+import Link from 'next/link'
 
 interface Episode {
     id: string;
@@ -21,20 +24,59 @@ interface EpisodeProps {
     episode: Episode;
 }
 
-export default function Episode({ episode }) {
-  return <h1>{episode.title}</h1>;
+export default function Episode({ episode } : EpisodeProps) {
+  return (
+    <div className={styles.episode}>
+      <div className={styles.thumbnailContainer}>
+        <Link href="/">
+          <button type="button">
+            <img src="/arrow-left.svg" alt="Voltar"/>
+          </button>
+        </Link>
+        
+        <Image width={700} height={160} src={episode.thumbnail} objectFit="cover"/>
+        <button type="button">
+          <img src="/play.svg" alt="Tocar episodio"/>
+        </button>
+      </div>
+      <header>
+        <h1>{episode.title}</h1>
+        <span>{episode.members}</span>
+        <span>{episode.publishedAt}</span>
+        <span>{episode.durationAsString}</span>
+      </header>
+      <div className={styles.description} dangerouslySetInnerHTML={{__html: episode.description}}/>
+        
+    </div>
+  )
 }
 
-// export const getStaticPaths: GetStaticPaths = async () => {
-//     return {
-//         paths: [],
-//         fallback: 'blocking'
-//     }
-// }
+export const getStaticPaths: GetStaticPaths = async () => {
+  const { data } = await api.get('episodes',  {
+    params: {
+      _limit: 2,
+      _sort: 'published_at',
+      _order: 'desc'
+    }
+  })
+
+  const paths = data.map(episode => {
+    return {
+      params: {
+        slug: episode.id
+      }
+    }
+  })
+
+    return {
+        paths: paths,
+        fallback: 'blocking'
+    }
+}
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { slug } = ctx.params;
-  const { data } = await api.get(`/episode/${slug}`);
+  const { data } = await api.get(`/episodes/${slug}`);
 
   const episode = {
     id: data.id,
